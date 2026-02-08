@@ -6,7 +6,7 @@ This directory contains a shared AWS provider installation for OpenTofu, allowin
 
 The shared provider installation is configured through two main files:
 - `~/.tofurc` - Main configuration that points to this shared installation
-- `~/.tofu_upd_aws.tfrc` - Update configuration for installing new provider versions
+-  [tofu.tfrc](tofu.tfrc) - Update configuration for installing new provider versions
 
 ## Current Configuration
 
@@ -14,7 +14,7 @@ The shared provider installation is configured through two main files:
 ```hcl
 provider_installation {
   filesystem_mirror {
-    path    = "/home/hvkukkonen/opentofu/.terraform/providers"
+    path    = "[this_dir]/.terraform/providers"
     include = ["registry.opentofu.org/hashicorp/aws"]
   }
   direct {
@@ -25,18 +25,7 @@ provider_installation {
 
 This makes AWS provider downloads to use the local mirror.
 
-### Update Configuration (`~/.tofu_upd_aws.tfrc`)
-```hcl
-provider_installation {
-  direct {
-    include = ["registry.opentofu.org/hashicorp/aws"]
-  }
-}
-```
-
-This overwrites the global behaviour with the default "install in this dir" behaviour.
-
 ## Provider Update Process
 
 1. Specify the desired version still missing from the mirror in the `~/opentofu/providers.tf`
-2. Run init with the override `TF_CLI_CONFIG_FILE=~/.tofu_upd_aws.tfrc tofu init`. This will download the latest AWS provider to the shared location.
+2. Run init with the override `TF_CLI_CONFIG_FILE=tofu.tfrc tofu init`. This will download the latest AWS provider to this dir.
